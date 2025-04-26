@@ -1,15 +1,3 @@
-"""
-  @file demo_read_voltage.py
-  @brief Connect ADS1115 I2C interface with your board (please reference board compatibility)
-  @n  The voltage value read by A0 A1 A2 A3 is printed through the serial port.
-  @copyright Copyright (c) 2010 DFRobot Co.Ltd
-  @license The MIT License (MIT)
-  @author [luoyufeng](yufeng.luo@dfrobot.com)
-  @version V1.0
-  @date 2019-06-19
-  @url https://github.com/DFRobot/DFRobot_ADS1115
-"""
-
 import time
 from DFRobot_ADS1115 import ADS1115
 
