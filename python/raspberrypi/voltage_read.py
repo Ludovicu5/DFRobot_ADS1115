@@ -20,13 +20,18 @@ while True:
     # Read all 4 channels
     adc0 = ads1115.read_voltage(0)
     time.sleep(0.2)
-    adc1 = ads1115.read_voltage(1)
-    time.sleep(0.2)
-    adc2 = ads1115.read_voltage(2)
-    time.sleep(0.2)
-    adc3 = ads1115.read_voltage(3)
+    # adc1 = ads1115.read_voltage(1)
+    # time.sleep(0.2)
+    # adc2 = ads1115.read_voltage(2)
+    # time.sleep(0.2)
+    # adc3 = ads1115.read_voltage(3)
+
+    # # Print results
+    # print("A0: {0} mV  A1: {1} mV  A2: {2} mV  A3: {3} mV".format(
+    #     adc0['r'], adc1['r'], adc2['r'], adc3['r']
+    # ))
 
     # Print results
-    print("A0: {0} mV  A1: {1} mV  A2: {2} mV  A3: {3} mV".format(
-        adc0['r'], adc1['r'], adc2['r'], adc3['r']
+    print("A0: {0} mV".format(
+        adc0['r']
     ))
