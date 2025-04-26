@@ -17,21 +17,13 @@ ads1115.set_addr_ADS1115(0x48)
 ads1115.set_gain(ADS1115_REG_CONFIG_PGA_6_144V)
 
 while True:
-    # Read all 4 channels
-    adc0 = ads1115.read_voltage(0)
-    time.sleep(0.2)
-    # adc1 = ads1115.read_voltage(1)
-    # time.sleep(0.2)
-    # adc2 = ads1115.read_voltage(2)
-    # time.sleep(0.2)
-    # adc3 = ads1115.read_voltage(3)
+    # Settings
+    read_interval = 0.5  # Time between measurements in seconds
 
-    # # Print results
-    # print("A0: {0} mV  A1: {1} mV  A2: {2} mV  A3: {3} mV".format(
-    #     adc0['r'], adc1['r'], adc2['r'], adc3['r']
-    # ))
+    while True:
+        # Read channel A0
+        adc0 = ads1115.read_voltage(0)
+        time.sleep(read_interval)
 
-    # Print results
-    print("A0: {0} mV".format(
-        adc0['r']
-    ))
+        # Print result
+        print("A0: {0} mV".format(adc0['r']))
