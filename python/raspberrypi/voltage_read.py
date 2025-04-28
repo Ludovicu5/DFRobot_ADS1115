@@ -1,10 +1,12 @@
 import tkinter as tk
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import collections
 from DFRobot_ADS1115 import ADS1115
+import time
 
-sampling_interval_ms = 500  # Tijd tussen metingen in milliseconden
+voltages = []
+
+sampling_interval_ms = 1000  # Tijd tussen metingen in milliseconden
 sampling_frequency_hz = 1000 / sampling_interval_ms  # Hz
 
 # Gain setting
@@ -15,10 +17,6 @@ ads1115 = ADS1115()
 ads1115.set_addr_ADS1115(0x48)
 ads1115.set_gain(ADS1115_REG_CONFIG_PGA_6_144V)
 
-# Buffer for last N points
-MAX_POINTS = 50
-voltages = collections.deque(maxlen=MAX_POINTS)
-
 # Function to read and update voltage
 def read_voltage():
     adc0 = ads1115.read_voltage(0)
@@ -26,10 +24,12 @@ def read_voltage():
     voltage_label.config(text=f"A0: {voltage} mV")
 
     # Add new reading to the buffer
-    voltages.append(voltage)
+    timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+    voltages.append((timestamp, voltage))
 
-    # Update the graph
-    line.set_data(range(len(voltages)), list(voltages))
+    # Update the graph (Alleen de spanningswaarden)
+    volt_values = [v for (t, v) in voltages]
+    line.set_data(range(len(volt_values)), volt_values)
     ax.relim()
     ax.autoscale_view()
 
@@ -37,8 +37,24 @@ def read_voltage():
 
     root.after(sampling_interval_ms, read_voltage)  # Schedule next reading
 
+def on_closing():
+    # Schrijf de voltages weg naar .txt-file
+    with open("voltages_log.txt", "w") as f:
+        for timestamp, v in voltages:
+            f.write(f"{timestamp}, {v}\n")
+
+    # Schrijf CSV-bestand
+    with open("voltages_log.csv", "w") as f_csv:
+        f_csv.write("timestamp,voltage_mV\n")  # Header toevoegen
+        for timestamp, v in voltages:
+            f_csv.write(f"{timestamp},{v}\n")
+
+    # Daarna venster sluiten
+    root.destroy()
+
 # Setup GUI
 root = tk.Tk()
+root.protocol("WM_DELETE_WINDOW", on_closing)
 root.title("Voltage Reader with Live Graph")
 root.geometry("800x480+1920+0")
 
