@@ -9,7 +9,7 @@
   @url https://github.com/DFRobot/DFRobot_ADS1115
 '''
 
-import smbus
+import smbus2 as smbus
 import time
 
 ## Get I2C bus
